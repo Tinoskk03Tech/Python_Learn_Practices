@@ -43,16 +43,20 @@ def inscrire_eleve () :
         effectif_terminale += 1
     # Saisie de l'établissement et du type de bourse
     etablissement = saisir_etablissement()
+    if etablissement == 'privé' :
     # Saisie du type de bourse
-    bourse = saisir_bourse()
-    # Mise à jour du nombre d'élèves selon le type de bourse
-    if bourse == "excellence":
-        bourse_excellence += 1
-    elif bourse == "sociale":
-        bourse_sociale += 1
-    elif bourse == "familiale":
-        bourse_familiale += 1
-    else:
+        bourse = saisir_bourse()
+        # Mise à jour du nombre d'élèves selon le type de bourse
+        if bourse == "excellence":
+            bourse_excellence += 1
+        elif bourse == "sociale":
+            bourse_sociale += 1
+        elif bourse == "familiale":
+            bourse_familiale += 1
+        else:
+            aucune_bourse += 1
+    else :
+        bourse = "aucune"
         aucune_bourse += 1
     # Message d'affichage du calcul des frais
     print("\nFRAIS CALCULÉS")
@@ -153,7 +157,9 @@ def consulter_eleve () :
     print(f"Âge : {age}")
     print(f"Classe : {classe}")
     print(f"Établissement : {etablissement}")
-    print(f"Type de bourse : {bourse}")
+    # Si l'établissement est privé, afficher le type de bourse
+    if etablissement == 'privé' :
+        print(f"Type de bourse : {bourse}")
     print(f"Frais totaux : {frais} FCFA")
     print("Statut : Inscription complète")
     
@@ -161,6 +167,9 @@ def consulter_eleve () :
 def modifier_inscription () :
     # Globalisation des variables utilisées
     global nom, prenom, age, classe, etablissement, bourse
+    global effectif_6eme, effectif_5eme, effectif_4eme, effectif_3eme
+    global effectif_2nde, effectif_1ere, effectif_terminale
+    global bourse_excellence, bourse_sociale, bourse_familiale, aucune_bourse
     # Message d'affichage de la modification des informations
     print("MODIFICATION DES INFORMATIONS")
     print(f"{'='*28}")
@@ -175,13 +184,63 @@ def modifier_inscription () :
     age = saisir_age()
     # Affichage et modification de la classe actuelle
     print(f"Classe actuelle : {classe}")
-    classe = input("Nouvelle classe : ")
+    if classe == "6ème":
+        effectif_6eme -= 1
+    elif classe == "5ème":
+        effectif_5eme -= 1
+    elif classe == "4ème":
+        effectif_4eme -= 1
+    elif classe == "3ème":
+        effectif_3eme -= 1
+    elif classe == "2nde":
+        effectif_2nde -= 1
+    elif classe == "1ère":
+        effectif_1ere -= 1
+    elif classe == "Terminale":
+        effectif_terminale -= 1
+    classe = saisir_classe()
+    # Mise à jour de l'effectif selon la classe
+    if classe == "6ème":
+        effectif_6eme += 1
+    elif classe == "5ème":
+        effectif_5eme += 1
+    elif classe == "4ème":
+        effectif_4eme += 1
+    elif classe == "3ème":
+        effectif_3eme += 1
+    elif classe == "2nde":
+        effectif_2nde += 1
+    elif classe == "1ère":
+        effectif_1ere += 1
+    elif classe == "Terminale":
+        effectif_terminale += 1
     # Affichage et modification de l'établissement actuelle
     print(f"Établissement actuel : {etablissement}")
-    etablissement = input("Nouvel établissement : ")
-    # Affichage et modification du type de bourse actuelle
-    print(f"Type de bourse actuel : {bourse}")
-    bourse = input("Nouveau type de bourse : ")
+    etablissement = saisir_etablissement()
+    # Si l'établissement est privé, permettre la modification du type de bourse
+    if etablissement == 'privé' :
+        # Affichage et modification du type de bourse actuelle
+        print(f"Type de bourse actuel : {bourse}")
+        if bourse == "excellence":
+            bourse_excellence -= 1
+        elif bourse == "sociale":
+            bourse_sociale -= 1
+        elif bourse == "familiale":
+            bourse_familiale -= 1
+        else:
+            aucune_bourse -= 1
+        bourse = saisir_bourse()
+        # Mise à jour du nombre d'élèves selon le type de bourse
+        if bourse == "excellence":
+            bourse_excellence += 1
+        elif bourse == "sociale":
+            bourse_sociale += 1
+        elif bourse == "familiale":
+            bourse_familiale += 1
+        else:
+            aucune_bourse += 1
+    else :
+        bourse = "aucune"
     # Message de confirmation de la modification des informations
     print("\nINFORMATIONS MODIFIÉES AVEC SUCCÈS !")
     
@@ -195,17 +254,25 @@ def calcul_detaille_fraie () :
     # Affichage des informations de l'élève
     print(f"classe : {classe}")
     print(f"Établissement : {etablissement}")
-    print(f"Type de bourse : {bourse}")
+    # Affichage du type de bourse si l'établissement est privé
+    if etablissement == 'privé' :
+        print(f"Type de bourse : {bourse}")
     # Affichage du détail des frais
     print("\nDÉTAIL DES FRAIS :")
     print(f"- Frais de base : {'35000 FCFA' if etablissement == 'privé' else '0 FCFA'}")
-    reduction = 0.5 if bourse == "excellence" else 0.3 if bourse == "sociale" else 0.2 if bourse == "familiale" else 0
-    print(f"- Réduction appliquée {'50%' if bourse == 'excellence' else '30%' if bourse == 'sociale' else '20%' if bourse == 'familiale' else '0%'} : - {reduction * 35000} FCFA")
-    print(f"- Frais APE : 2000 FCFA")
-    print("- Cantine : 1500 FCFA")
-    print("- Transport : 1000 FCFA")
-    # Affichage du total des frais à payer
-    print(f"- Total à payer : {frais} FCFA")
+    # Calcul de la réduction appliquée si l'établissement est privé
+    if etablissement == 'privé' :
+        reduction = 0.5 if bourse == "excellence" else 0.3 if bourse == "sociale" else 0.2 if bourse == "familiale" else 0
+        print(f"- Réduction appliquée {'50%' if bourse == 'excellence' else '30%' if bourse == 'sociale' else '20%' if bourse == 'familiale' else '0%'} : - {reduction * 35000} FCFA")
+        print(f"- Frais APE : 2000 FCFA")
+        print("- Cantine : 1500 FCFA")
+        print("- Transport : 1000 FCFA")
+        # Affichage du total des frais à payer
+        print(f"- Total à payer : {frais} FCFA")
+    else :
+        print(f"- Frais APE : 2000 FCFA")
+        # Affichage du total des frais à payer
+        print(f"- Total à payer : {frais} FCFA")
     
 # Fonction d'affichage des statistiques générales
 def statistique_generale () :

@@ -30,16 +30,20 @@ def inscrire_eleve () :
         effectif_terminale += 1
     # Saisie de l'établissement et du type de bourse
     etablissement = saisir_etablissement()
+    if etablissement == 'privé' :
     # Saisie du type de bourse
-    bourse = saisir_bourse()
-    # Mise à jour du nombre d'élèves selon le type de bourse
-    if bourse == "excellence":
-        bourse_excellence += 1
-    elif bourse == "sociale":
-        bourse_sociale += 1
-    elif bourse == "familiale":
-        bourse_familiale += 1
-    else:
+        bourse = saisir_bourse()
+        # Mise à jour du nombre d'élèves selon le type de bourse
+        if bourse == "excellence":
+            bourse_excellence += 1
+        elif bourse == "sociale":
+            bourse_sociale += 1
+        elif bourse == "familiale":
+            bourse_familiale += 1
+        else:
+            aucune_bourse += 1
+    else :
+        bourse = "aucune"
         aucune_bourse += 1
     # Message d'affichage du calcul des frais
     print("\nFRAIS CALCULÉS")
@@ -47,13 +51,17 @@ def inscrire_eleve () :
     frais = calculer_frais(etablissement, bourse)
     
     print(f"Frais de base : {'35000 FCFA' if etablissement == 'privé' else '0 FCFA'}")
-    # Calcul de la réduction appliquée
-    reduction = 0.5 if bourse == "excellence" else 0.3 if bourse == "sociale" else 0.2 if bourse == "familiale" else 0
-    print(f"Réduction appliquée : {35000 * reduction} FCFA")
-    
-    print(f"Frais APE : 2000 FCFA")
-    # Affichage du total des frais
-    print(f"Total : {frais} FCFA")
+    if etablissement == 'privé' :
+        # Calcul de la réduction appliquée
+        reduction = 0.5 if bourse == "excellence" else 0.3 if bourse == "sociale" else 0.2 if bourse == "familiale" else 0
+        print(f"Réduction appliquée : {35000 * reduction} FCFA")
+        
+        print(f"Frais APE : 2000 FCFA")
+        # Affichage du total des frais
+        print(f"Total : {frais} FCFA")
+    else :
+        print("Frais APE : 2000 FCFA")
+        print(f"Total : {frais} FCFA")
     
     nombre_total_inscrits += 1
     # Message de confirmation de l'inscription

@@ -11,6 +11,8 @@ def consulter_eleve () :
     print(f"Âge : {age}")
     print(f"Classe : {classe}")
     print(f"Établissement : {etablissement}")
-    print(f"Type de bourse : {bourse}")
+    # Si l'établissement est privé, afficher le type de bourse
+    if etablissement == 'privé' :
+        print(f"Type de bourse : {bourse}")
     print(f"Frais totaux : {frais} FCFA")
     print("Statut : Inscription complète")
