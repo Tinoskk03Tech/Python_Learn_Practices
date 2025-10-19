@@ -21,12 +21,13 @@ def inscrire_eleve () :
     global bourse_excellence, bourse_sociale, bourse_familiale, aucune_bourse
     # Message d'affichage de l'inscription d'un nouvel élève
     print("INSCRIPTION D'UN NOUVEL ÉLÈVE")
+    
+
     # Saisie des informations de l'élève
     nom = input("Nom : ")
     prenom = input("Prénom : ")
     age = saisir_age()
     classe = saisir_classe()
-    # Mise à jour de l'effectif selon la classe
     if classe == "6ème":
         effectif_6eme += 1
     elif classe == "5ème":
@@ -41,44 +42,65 @@ def inscrire_eleve () :
         effectif_1ere += 1
     elif classe == "Terminale":
         effectif_terminale += 1
-    # Saisie de l'établissement et du type de bourse
-    etablissement = saisir_etablissement()
-    if etablissement == 'privé' :
-    # Saisie du type de bourse
-        bourse = saisir_bourse()
-        # Mise à jour du nombre d'élèves selon le type de bourse
-        if bourse == "excellence":
-            bourse_excellence += 1
-        elif bourse == "sociale":
-            bourse_sociale += 1
-        elif bourse == "familiale":
-            bourse_familiale += 1
-        else:
+
+    # Vérification des effectifs avant l'inscription
+    if effectif_6eme <= 1 and effectif_5eme <= 45 and effectif_4eme <= 45 and effectif_3eme <= 45 and effectif_2nde <= 45 and effectif_1ere <= 45 and effectif_terminale <= 45:
+        # Mise à jour de l'effectif selon la classe
+        if classe == "6ème":
+            effectif_6eme -= 1
+        elif classe == "5ème":
+            effectif_5eme -= 1
+        elif classe == "4ème":
+            effectif_4eme -= 1
+        elif classe == "3ème":
+            effectif_3eme -= 1
+        elif classe == "2nde":
+            effectif_2nde -= 1
+        elif classe == "1ère":
+            effectif_1ere -= 1
+        elif classe == "Terminale":
+            effectif_terminale -= 1
+        # Saisie de l'établissement et du type de bourse
+        etablissement = saisir_etablissement()
+        if etablissement == 'privé' :
+        # Saisie du type de bourse
+            bourse = saisir_bourse()
+            # Mise à jour du nombre d'élèves selon le type de bourse
+            if bourse == "excellence":
+                bourse_excellence += 1
+            elif bourse == "sociale":
+                bourse_sociale += 1
+            elif bourse == "familiale":
+                bourse_familiale += 1
+            else:
+                aucune_bourse += 1
+        else :
+            bourse = "aucune"
             aucune_bourse += 1
-    else :
-        bourse = "aucune"
-        aucune_bourse += 1
-    # Message d'affichage du calcul des frais
-    print("\nFRAIS CALCULÉS")
-    # Calcul des frais et mise à jour des recettes
-    frais = calculer_frais(etablissement, bourse)
-    
-    print(f"Frais de base : {'35000 FCFA' if etablissement == 'privé' else '0 FCFA'}")
-    if etablissement == 'privé' :
-        # Calcul de la réduction appliquée
-        reduction = 0.5 if bourse == "excellence" else 0.3 if bourse == "sociale" else 0.2 if bourse == "familiale" else 0
-        print(f"Réduction appliquée : {35000 * reduction} FCFA")
-        
-        print(f"Frais APE : 2000 FCFA")
-        # Affichage du total des frais
-        print(f"Total : {frais} FCFA")
-    else :
-        print("Frais APE : 2000 FCFA")
-        print(f"Total : {frais} FCFA")
-    
-    nombre_total_inscrits += 1
-    # Message de confirmation de l'inscription
-    print("\nElève inscrit avec succès !")
+        # Message d'affichage du calcul des frais
+        print("\nFRAIS CALCULÉS")
+        # Calcul des frais et mise à jour des recettes
+        frais = calculer_frais(etablissement, bourse)
+
+        print(f"Frais de base : {'35000 FCFA' if etablissement == 'privé' else '0 FCFA'}")
+        if etablissement == 'privé' :
+            # Calcul de la réduction appliquée
+            reduction = 0.5 if bourse == "excellence" else 0.3 if bourse == "sociale" else 0.2 if bourse == "familiale" else 0
+            print(f"Réduction appliquée : {35000 * reduction} FCFA")
+
+            print(f"Frais APE : 2000 FCFA")
+            # Affichage du total des frais
+            print(f"Total : {frais} FCFA")
+        else :
+            print("Frais APE : 2000 FCFA")
+            print(f"Total : {frais} FCFA")
+
+        nombre_total_inscrits += 1
+        # Message de confirmation de l'inscription
+        print("\nElève inscrit avec succès !")
+    else:
+        print("\nEffectif maximum atteint pour cette classe. Inscription impossible.")
+        return
     
     
 
@@ -117,10 +139,10 @@ def saisir_classe() :
     while True:
         classe = input("Classe (6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Terminale) : ")
         # Validation de la classe
-        if classe not in "6ème" "5ème" "4ème" "3ème" "2nde" "1ère" "Terminale":
-            print("Classe invalide ! Veuillez réessayer.")
-            continue
-        return classe
+        if classe == "6ème" or classe == "5ème" or classe == "4ème" or classe == "3ème" or classe == "2nde" or classe == "1ère" or classe == "Terminale" :
+            return classe
+        else :
+            print("Erreur ! Entrez une classe valide.")
 
 # Fonction de saisie et validation du type de bourse
 def saisir_bourse() :
@@ -128,10 +150,10 @@ def saisir_bourse() :
     while True:
         bourse = input("Type de bourse (excellence, sociale, familiale, aucune) : ")
         # Validation du type de bourse
-        if bourse not in "excellence" "sociale" "familiale" "aucune":
+        if bourse == "excellence" or bourse == "sociale" or bourse == "familiale" or bourse =="aucune":
+            return bourse
+        else :
             print("Type de bourse invalide ! Veuillez réessayer.")
-            continue
-        return bourse
 
 # Fonction de saisie et validation de l'établissement
 def saisir_etablissement() :
@@ -139,10 +161,10 @@ def saisir_etablissement() :
     while True:
         etablissement = input("Établissement (public/privé) : ")
         # Validation de l'établissement
-        if etablissement not in "public" "privé":
+        if etablissement == "public" or etablissement == "privé":
+            return etablissement
+        else :
             print("Établissement invalide ! Veuillez réessayer.")
-            continue
-        return etablissement
     
 # Fonction de consultation des informations de l'élève
 def consulter_eleve () :
