@@ -30,7 +30,7 @@ def inscrire_eleve():
         effectif_terminale += 1
 
     # Vérification des effectifs avant l'inscription
-    if effectif_6eme <= 1 and effectif_5eme <= 45 and effectif_4eme <= 45 and effectif_3eme <= 45 and effectif_2nde <= 45 and effectif_1ere <= 45 and effectif_terminale <= 45:
+    if effectif_6eme <= 45 and effectif_5eme <= 45 and effectif_4eme <= 45 and effectif_3eme <= 45 and effectif_2nde <= 45 and effectif_1ere <= 45 and effectif_terminale <= 45:
         # Mise à jour de l'effectif selon la classe
         if classe == "6ème":
             effectif_6eme -= 1
